@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 3%;
+  --foreground: 0 0% 98%;
+  --primary: 217 100% 48%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 262 80% 50%;
+  --accent-foreground: 0 0% 100%;
+  --card: 0 0% 8%;
+  --card-foreground: 0 0% 98%;
+  --muted: 0 0% 30%;
+  --muted-foreground: 0 0% 70%;
+  --border: 0 0% 15%;
+}
+
+body {
+  @apply bg-background text-foreground;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Glassmorphism Effects */
+@layer components {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-xl;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-xl cursor-pointer;
+  }
+
+  .glass-button {
+    @apply px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 transition-all duration-200 font-medium text-sm;
+  }
+
+  .glass-input {
+    @apply w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-foreground placeholder-muted-foreground transition-all focus:outline-none focus:border-accent focus:bg-white/10;
+  }
+
+  .micro-border {
+    @apply border border-white/5;
+  }
+
+  .elegant-shadow {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .smooth-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+
+  .smooth-lift {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-xl;
+  }
+
+  .skeleton {
+    @apply animate-pulse bg-white/10 rounded-lg;
+  }
+}
+
+
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
