@@ -2,7 +2,8 @@ import  { useState } from 'react';
 import { Plus, Edit2, Trash2, Eye, EyeOff } from 'lucide-react';
 import { heroData } from '../data/cms-data';
 import { EditHeroModal } from './modals/EditHeroModal';
-import { AddItemModal } from './modals/AddItemModal';
+import AddHeroModal from './modals/AddHeroModal';
+
 
 export function ModernHeroPage() {
   const [heroes, setHeroes] = useState(heroData);
@@ -37,16 +38,16 @@ export function ModernHeroPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-foreground mb-2">Hero Sections</h1>
-          <p className="text-muted-foreground">Manage your website hero sections with premium editing experience</p>
+          <h1 className="page-title text-4xl">Hero Sections</h1>
+          <p className="page-subtitle">Manage your website hero sections with premium editing experience</p>
         </div>
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="glass-button bg-accent hover:bg-accent/90 text-white border-accent flex items-center gap-2"
+          className="btn-primary flex items-center gap-2"
         >
           <Plus size={18} />
           Add New Hero
@@ -61,11 +62,18 @@ export function ModernHeroPage() {
             className="glass-card-hover group relative overflow-hidden"
           >
             <div className="p-6 flex gap-6">
-              {/* Image Preview */}
-              <div className="w-40 h-40 rounded-lg bg-gradient-to-br from-accent/20 to-accent/5 flex-shrink-0 overflow-hidden border border-white/10">
-                <div className="w-full h-full flex items-center justify-center text-accent/50">
-                  <span className="text-sm">No Image</span>
-                </div>
+              <div className="w-40 h-40 rounded-xl flex-shrink-0 overflow-hidden border border-border shadow-premium">
+                {hero.image ? (
+                  <img
+                    src={hero.image}
+                    alt={hero.title}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-accent/20 to-accent/5 text-accent/50">
+                    No Image
+                  </div>
+                )}
               </div>
 
               {/* Content */}
@@ -76,10 +84,8 @@ export function ModernHeroPage() {
                       <h3 className="text-xl font-bold text-foreground mb-1">{hero.title}</h3>
                       <p className="text-muted-foreground text-sm line-clamp-2">{hero.subtitle}</p>
                     </div>
-                    <span className={`flex-shrink-0 text-xs px-3 py-1 rounded-full font-medium whitespace-nowrap ${
-                      hero.status === 'published'
-                        ? 'bg-green-500/20 text-green-400'
-                        : 'bg-amber-500/20 text-amber-400'
+                    <span className={`flex-shrink-0 whitespace-nowrap ${
+                      hero.status === 'published' ? 'badge-success' : 'badge-warning'
                     }`}>
                       {hero.status === 'published' ? '● Live' : '● Draft'}
                     </span>
@@ -87,7 +93,7 @@ export function ModernHeroPage() {
                 </div>
 
                 {/* Stats */}
-                <div className="flex gap-6 my-4 pb-4 border-b border-white/5">
+                <div className="flex gap-6 my-4 pb-4 border-b section-divider">
                   <div>
                     <div className="text-xs text-muted-foreground">Created</div>
                     <div className="text-sm font-medium text-foreground">
@@ -106,21 +112,21 @@ export function ModernHeroPage() {
                 <div className="flex gap-3">
                   <button
                     onClick={() => handleEdit(hero.id)}
-                    className="glass-button text-accent hover:text-white hover:bg-accent/30 flex items-center gap-2 flex-1"
+                    className="btn-secondary flex items-center gap-2 flex-1"
                   >
                     <Edit2 size={16} />
                     Edit
                   </button>
                   <button
                     onClick={() => toggleVisibility(hero.id)}
-                    className="glass-button text-muted-foreground hover:text-foreground flex items-center gap-2 flex-1"
+                    className="glass-button flex items-center gap-2 flex-1"
                   >
                     {hero.status === 'published' ? <Eye size={16} /> : <EyeOff size={16} />}
                     {hero.status === 'published' ? 'Hide' : 'Show'}
                   </button>
                   <button
                     onClick={() => handleDelete(hero.id)}
-                    className="glass-button text-red-400 hover:bg-red-500/20 flex items-center gap-2"
+                    className="glass-button text-destructive hover:bg-destructive/10 flex items-center gap-2"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -132,10 +138,9 @@ export function ModernHeroPage() {
       </div>
 
       {/* Add Modal */}
-      <AddItemModal
+      <AddHeroModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        itemType="Hero Section"
         onAdd={handleAddHero}
       />
 

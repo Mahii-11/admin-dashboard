@@ -37,22 +37,29 @@ export default function Sidebar({ open, onToggle, currentPage, onNavigate }) {
   };
 
   return (
-    <div className={`${open ? 'w-64' : 'w-20'} transition-all duration-200 bg-card border-r border-border flex flex-col h-screen`}>
+    <div className={`${open ? 'w-64' : 'w-20'} transition-all duration-300 sidebar-shell flex flex-col h-screen flex-shrink-0`}>
       
       {/* Logo */}
       <div className="h-16 flex items-center justify-between px-4 border-b border-border">
-        {open && <div className="text-lg font-bold text-accent">CMS Hub</div>}
+        {open && (
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg avatar-gradient flex items-center justify-center text-xs font-bold shadow-glow">
+              C
+            </div>
+            <span className="text-lg font-bold logo-gradient">CMS Hub</span>
+          </div>
+        )}
         <button
           onClick={onToggle}
-          className="p-1 hover:bg-muted rounded transition-colors"
+          className="icon-btn p-1.5"
           aria-label="Toggle sidebar"
         >
-          <ChevronRight size={20} className={`${!open ? 'rotate-180' : ''} transition-transform`} />
+          <ChevronRight size={20} className={`${!open ? 'rotate-180' : ''} transition-transform duration-300`} />
         </button>
       </div>
 
       {/* Menu Items */}
-      <nav className="flex-1 overflow-y-auto p-4 space-y-3 no-scrollbar">
+      <nav className="flex-1 overflow-y-auto p-3 space-y-2 no-scrollbar">
         {cmsNavigation.map((group) => {
           const isExpanded = expandedGroups[group.group];
           
@@ -61,15 +68,15 @@ export default function Sidebar({ open, onToggle, currentPage, onNavigate }) {
               {open && (
                 <button
                   onClick={() => toggleGroup(group.group)}
-                  className="flex items-center justify-between w-full px-2 py-2 text-xs font-semibold text-muted-foreground hover:text-accent transition-colors"
+                  className="flex items-center justify-between w-full px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground hover:text-accent transition-colors"
                 >
                   {group.group}
-                  <ChevronDown size={16} className={`transition-transform duration-300 ${isExpanded ? '' : '-rotate-90'}`} />
+                  <ChevronDown size={14} className={`transition-transform duration-300 ${isExpanded ? '' : '-rotate-90'}`} />
                 </button>
               )}
               
               {(open && isExpanded) && (
-                <div className="space-y-1 mt-1">
+                <div className="space-y-0.5 mt-0.5">
                   {group.items.map((item) => {
                     const IconComponent = iconMap[item.icon];
                     const isActive = currentPage === item.id;
@@ -78,14 +85,10 @@ export default function Sidebar({ open, onToggle, currentPage, onNavigate }) {
                       <button
                         key={item.id}
                         onClick={() => onNavigate(item.id)}
-                        className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg transition-colors ${
-                          isActive
-                            ? 'bg-accent/20 text-accent'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                        }`}
+                        className={`nav-item ${isActive ? 'nav-item-active' : ''}`}
                       >
                         {IconComponent && <IconComponent size={18} />}
-                        <span className="text-sm">{item.label}</span>
+                        <span>{item.label}</span>
                       </button>
                     );
                   })}
@@ -93,7 +96,7 @@ export default function Sidebar({ open, onToggle, currentPage, onNavigate }) {
               )}
               
               {!open && group.items.length > 0 && (
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   {group.items.slice(0, 2).map((item) => {
                     const IconComponent = iconMap[item.icon];
                     const isActive = currentPage === item.id;
@@ -102,9 +105,9 @@ export default function Sidebar({ open, onToggle, currentPage, onNavigate }) {
                       <button
                         key={item.id}
                         onClick={() => onNavigate(item.id)}
-                        className={`flex items-center justify-center w-full p-2 rounded-lg transition-colors ${
+                        className={`flex items-center justify-center w-full p-2.5 rounded-lg transition-all duration-200 ${
                           isActive
-                            ? 'bg-accent/20 text-accent'
+                            ? 'nav-item-active'
                             : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                         }`}
                         title={item.label}
@@ -122,8 +125,16 @@ export default function Sidebar({ open, onToggle, currentPage, onNavigate }) {
 
       {/* Footer */}
       <div className="p-4 border-t border-border mt-auto">
-        <div className="h-10 w-10 bg-accent rounded-full flex items-center justify-center font-semibold text-accent-foreground">
-          {open ? 'CMS' : 'C'}
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 avatar-gradient rounded-xl flex items-center justify-center font-semibold text-sm shadow-glow flex-shrink-0">
+            {open ? 'CMS' : 'C'}
+          </div>
+          {open && (
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-foreground truncate">Admin User</p>
+              <p className="text-xs text-muted-foreground truncate">Content Manager</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

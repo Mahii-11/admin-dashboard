@@ -1,40 +1,47 @@
 import { Search, Bell, Settings, Menu } from 'lucide-react'
+import ThemeToggle from '../components/ThemeToggle'
 
-export default function TopBar({  onToggleSidebar }) {
+export default function TopBar({ onToggleSidebar }) {
   return (
-    <div className="h-16 border-b border-border bg-card flex items-center justify-between px-6 sticky top-0 z-40">
+    <div className="h-16 topbar-shell flex items-center justify-between px-6">
       
       {/* Left side - Search */}
       <div className="flex items-center gap-4 flex-1">
         <button
           onClick={onToggleSidebar}
-          className="p-2 hover:bg-muted rounded-lg transition-colors lg:hidden"
+          className="icon-btn lg:hidden"
+          aria-label="Toggle menu"
         >
           <Menu size={20} />
         </button>
         
-        <div className="hidden sm:flex items-center gap-2 bg-muted rounded-lg px-3 py-2 flex-1 max-w-xs">
-          <Search size={18} className="text-muted-foreground" />
+        <div className="hidden sm:flex search-bar flex-1 max-w-md">
+          <Search size={18} className="text-muted-foreground flex-shrink-0" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search pages, content, settings..."
             className="bg-transparent outline-none text-sm flex-1 text-foreground placeholder-muted-foreground"
           />
+          <kbd className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium text-muted-foreground bg-background-secondary rounded border border-border">
+            ⌘K
+          </kbd>
         </div>
       </div>
 
       {/* Right side - Icons */}
-      <div className="flex items-center gap-4">
-        <button className="p-2 hover:bg-muted rounded-lg transition-colors relative">
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
+
+        <button className="icon-btn relative" aria-label="Notifications">
           <Bell size={20} />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          <span className="absolute top-2 right-2 w-2 h-2 bg-destructive rounded-full ring-2 ring-card"></span>
         </button>
         
-        <button className="p-2 hover:bg-muted rounded-lg transition-colors">
+        <button className="icon-btn" aria-label="Settings">
           <Settings size={20} />
         </button>
 
-        <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-accent-foreground font-semibold cursor-pointer hover:opacity-80 transition-opacity">
+        <div className="w-10 h-10 avatar-gradient rounded-xl flex items-center justify-center font-semibold cursor-pointer hover:shadow-glow transition-shadow ml-1">
           U
         </div>
       </div>

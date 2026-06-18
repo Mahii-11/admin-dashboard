@@ -36,11 +36,11 @@ export default function App() {
         onNavigate={setCurrentPage}
       />
 
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <TopBar sidebarOpen={sidebarOpen} onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+        <TopBar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
-        <div className="flex-1 overflow-auto no-scrollbar">
-          <div className="p-8 max-w-7xl mx-auto w-full">
+        <div className="flex-1 overflow-auto no-scrollbar bg-background">
+          <div className="p-6 md:p-8 max-w-7xl mx-auto w-full">
             {renderPage()}
           </div>
         </div>

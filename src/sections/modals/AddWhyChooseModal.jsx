@@ -1,41 +1,52 @@
-import { X, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { Plus, X } from "lucide-react";
+import { useState } from "react"
 
-export function AddItemModal({ isOpen, onClose, itemType, onAdd }) {
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    icon: '',
-    linkText: '',
-    status: 'draft'
-  });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.title.trim()) {
-      onAdd(formData);
-      setFormData({ title: '', description: '', icon: '', linkText: '', status: 'draft' });
-      onClose();
-    }
-  };
 
-  if (!isOpen) return null;
+
+export default function AddWhyChooseModal({isOpen, onClose, onAdd}) {
+    const [formData, setFormData] = useState({
+        title: "",
+        description: "",
+        icon: "",
+        linkText: "",
+        status: "draft"
+     });
+
+     const handleSubmit = (e) => {
+        e.preventDefault();
+        if (formData.title.trim()) {
+            onAdd(formData);
+            setFormData({
+                title: "",
+                description: "",
+                icon: "",
+                linkText: "",
+                status: "draft"
+            });
+            onClose()
+        }
+     };
+
+      if (!isOpen) return null;
+
+
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 no-scrollbar">
-      <div className="bg-card border border-border rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto no-scrollbar">
+    <div className="modal-overlay no-scrollbar">
+      <div className="modal-panel">
         {/* Header */}
-        <div className="sticky top-0 bg-card border-b border-border px-8 py-6 flex items-center justify-between">
+        <div className="modal-header">
           <div>
-            <h2 className="text-2xl font-bold text-foreground">Add {itemType}</h2>
-            <p className="text-muted-foreground text-sm mt-1">Create a new {itemType.toLowerCase()} item</p>
+            <h2 className="text-2xl font-bold text-foreground">Add Why Choose</h2>
+            <p className="text-muted-foreground text-sm mt-1">Create a new Why Choose item</p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-muted rounded-lg transition-colors"
+            className="icon-btn"
             aria-label="Close"
           >
-            <X size={24} className="text-muted-foreground" />
+            <X size={24} />
           </button>
         </div>
 
@@ -54,27 +65,25 @@ export function AddItemModal({ isOpen, onClose, itemType, onAdd }) {
             />
           </div>
 
-          {itemType === 'Why Choose Item' && (
             <div>
               <label className="block text-sm font-semibold text-foreground mb-2">Icon</label>
               <select
                 value={formData.icon}
                 onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
-                className="glass-input "
+                className="glass-input"
               >
-                <option className='bg-slate-900 text-white' value="">Select an icon</option>
-                <option className='bg-slate-900 text-white' value="Heart">Heart</option>
-                <option className='bg-slate-900 text-white' value="Users">Users</option>
-                <option className='bg-slate-900 text-white' value="Award">Award</option>
-                <option className='bg-slate-900 text-white' value="Check">Check</option>
-                <option className='bg-slate-900 text-white' value="Shield">Shield</option>
-                <option className='bg-slate-900 text-white' value="Globe">Globe</option>
-                <option className='bg-slate-900 text-white' value="Star">Star</option>
-                <option className='bg-slate-900 text-white' value="Zap">Zap</option>
+                <option value="">Select an icon</option>
+                <option value="Heart">Heart</option>
+                <option value="Users">Users</option>
+                <option value="Award">Award</option>
+                <option value="Check">Check</option>
+                <option value="Shield">Shield</option>
+                <option value="Globe">Globe</option>
+                <option value="Star">Star</option>
+                <option value="Zap">Zap</option>
               </select>
             </div>
-          )}
-
+        
           {/* Description */}
           <div>
             <label className="block text-sm font-semibold text-foreground mb-2">Description</label>
@@ -86,8 +95,7 @@ export function AddItemModal({ isOpen, onClose, itemType, onAdd }) {
             />
           </div>
 
-          {/* Link Text (for Why Choose) */}
-          {itemType === 'Why Choose Item' && (
+
             <div>
               <label className="block text-sm font-semibold text-foreground mb-2">Link Text</label>
               <input
@@ -98,7 +106,7 @@ export function AddItemModal({ isOpen, onClose, itemType, onAdd }) {
                 className="glass-input"
               />
             </div>
-          )}
+          
 
           {/* Status */}
           <div>
@@ -111,7 +119,7 @@ export function AddItemModal({ isOpen, onClose, itemType, onAdd }) {
                   value="published"
                   checked={formData.status === 'published'}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                  className="w-4 h-4"
+                  className="w-4 h-4 accent-accent"
                 />
                 <span className="text-sm text-foreground">Published</span>
               </label>
@@ -122,7 +130,7 @@ export function AddItemModal({ isOpen, onClose, itemType, onAdd }) {
                   value="draft"
                   checked={formData.status === 'draft'}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                  className="w-4 h-4"
+                  className="w-4 h-4 accent-accent"
                 />
                 <span className="text-sm text-foreground">Draft</span>
               </label>
@@ -130,24 +138,24 @@ export function AddItemModal({ isOpen, onClose, itemType, onAdd }) {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-6 border-t border-border">
+          <div className="flex gap-3 pt-6 border-t section-divider">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-3 rounded-lg border border-border text-foreground hover:bg-muted transition-colors font-medium"
+              className="flex-1 btn-ghost"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-3 rounded-lg bg-accent hover:bg-accent/90 text-accent-foreground transition-colors font-medium flex items-center justify-center gap-2"
+              className="flex-1 btn-primary flex items-center justify-center gap-2"
             >
               <Plus size={18} />
-              Add {itemType}
+              Add 
             </button>
           </div>
         </form>
       </div>
     </div>
-  );
+  )
 }

@@ -47,7 +47,7 @@ export const heroData = [
     id: 1,
     title: 'Welcome to Our Platform',
     subtitle: 'Build amazing things with cutting-edge technology',
-    image: '/placeholder-hero.jpg',
+    image: '/images/CR7.jpg',
     status: 'published',
     createdAt: '2024-06-10'
   }
@@ -96,7 +96,7 @@ export const teamMembers = [
     role: 'Lead Designer',
     bio: 'Creative design strategist with 8 years of experience',
     email: 'sarah@company.com',
-    image: '/avatar-1.jpg',
+    image: '/images/image-1.jpg',
     status: 'active'
   },
   {
@@ -105,7 +105,7 @@ export const teamMembers = [
     role: 'Senior Developer',
     bio: 'Full-stack engineer passionate about scalable systems',
     email: 'mike@company.com',
-    image: '/avatar-2.jpg',
+    image: '/images/image-2.jpg',
     status: 'active'
   },
   {
@@ -114,7 +114,7 @@ export const teamMembers = [
     role: 'Product Manager',
     bio: 'Focused on user-centric product development',
     email: 'emma@company.com',
-    image: '/avatar-3.jpg',
+    image: '/images/image-3.jpg',
     status: 'active'
   }
 ];

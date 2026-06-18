@@ -2,8 +2,8 @@ import  { useState } from 'react';
 import { Plus, Edit2, Trash2, Eye, EyeOff } from 'lucide-react';
 import { whyChooseData } from '../data/cms-data';
 import { EditWhyChooseModal } from './modals/EditWhyChooseModal';
-import { AddItemModal } from './modals/AddItemModal';
 import * as Icons from 'lucide-react';
+import AddWhyChooseModal from './modals/AddWhyChooseModal';
 
 const iconMap = {
   Heart: Icons.Heart,
@@ -32,15 +32,26 @@ export function ModernWhyChoosePage() {
   };
 
   const handleSave = (updatedData) => {
-    setItems(items.map(item => item.id === editingId ? { ...item, ...updatedData } : item));
-    setIsEditModalOpen(false);
-    setEditingId(null);
+    setItems(
+      items.map(item => 
+      item.id === editingId 
+      ? { ...item, ...updatedData }
+     : item
+
+     ));
+
+     setIsEditModalOpen(false);
+     setEditingId(null);
   };
 
   const handleAddItem = (newData) => {
     const newId = Math.max(...items.map(i => i.id), 0) + 1;
-    setItems([...items, { ...newData, id: newId, createdAt: new Date().toISOString().split('T')[0] }]);
+    setItems([...items, 
+    { ...newData, 
+    id: newId, 
+    createdAt: new Date().toISOString().split('T')[0] }]);
   };
+  
 
   const toggleVisibility = (id) => {
     setItems(items.map(item => 
@@ -51,16 +62,16 @@ export function ModernWhyChoosePage() {
   const editingItem = items.find(item => item.id === editingId);
 
   return (
-    <div className="min-h-screen">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-foreground mb-2">Why Choose Us</h1>
-          <p className="text-muted-foreground">Manage your key selling points and value propositions</p>
+          <h1 className="page-title text-4xl">Why Choose Us</h1>
+          <p className="page-subtitle">Manage your key selling points and value propositions</p>
         </div>
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="glass-button bg-accent hover:bg-accent/90 text-white border-accent flex items-center gap-2"
+          className="btn-primary flex items-center gap-2"
         >
           <Plus size={18} />
           Add Why Choose
@@ -75,11 +86,11 @@ export function ModernWhyChoosePage() {
           return (
             <div
               key={item.id}
-              className="glass-card-hover group relative overflow-hidden "
+              className="glass-card-hover group relative overflow-hidden"
             >
               <div className="p-6 flex gap-6 items-start">
                 {/* Icon Area */}
-                <div className="w-16 h-16 rounded-lg bg-accent/20 flex-shrink-0 flex items-center justify-center border border-accent/30">
+                <div className="w-16 h-16 rounded-xl bg-accent/10 flex-shrink-0 flex items-center justify-center border border-accent/20">
                   {IconComponent && (
                     <IconComponent size={32} className="text-accent" />
                   )}
@@ -90,11 +101,9 @@ export function ModernWhyChoosePage() {
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-foreground mb-1">{item.title}</h3>
-                      <span className={`inline-block text-xs px-3 py-1 rounded-full font-medium ${
-                        item.status === 'published'
-                          ? 'bg-green-500/20 text-green-400'
-                          : 'bg-amber-500/20 text-amber-400'
-                      }`}>
+                      <span className={
+                        item.status === 'published' ? 'badge-success' : 'badge-warning'
+                      }>
                         {item.status === 'published' ? '● Published' : '● Draft'}
                       </span>
                     </div>
@@ -122,7 +131,7 @@ export function ModernWhyChoosePage() {
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <button
                     onClick={() => toggleVisibility(item.id)}
-                    className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-foreground"
+                    className="icon-btn"
                     title={item.status === 'published' ? 'Hide' : 'Show'}
                   >
                     {item.status === 'published' ? (
@@ -133,14 +142,14 @@ export function ModernWhyChoosePage() {
                   </button>
                   <button
                     onClick={() => handleEdit(item.id)}
-                    className="px-4 py-2 bg-accent/10 hover:bg-accent/20 text-accent rounded-lg transition-colors font-medium text-sm flex items-center gap-2"
+                    className="btn-secondary flex items-center gap-2 text-sm"
                   >
                     <Edit2 size={16} />
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(item.id)}
-                    className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors font-medium text-sm flex items-center gap-2"
+                    className="px-4 py-2 bg-destructive/10 hover:bg-destructive/20 text-destructive rounded-lg transition-colors font-medium text-sm flex items-center gap-2"
                   >
                     <Trash2 size={16} />
                     Delete
@@ -153,10 +162,9 @@ export function ModernWhyChoosePage() {
       </div>
 
       {/* Add Modal */}
-      <AddItemModal
+      <AddWhyChooseModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        itemType="Why Choose Item"
         onAdd={handleAddItem}
       />
 

@@ -26,14 +26,14 @@ export function EditWhyChooseModal({ item, onClose, onSave }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="glass-card w-full max-w-2xl max-h-[90vh] overflow-y-auto no-scrollbar">
+    <div className="modal-overlay p-4">
+      <div className="modal-panel">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10 sticky top-0 bg-card/80 backdrop-blur-sm">
+        <div className="modal-header">
           <h2 className="text-2xl font-bold text-foreground">Edit Why Choose Item</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-muted rounded-lg transition-colors"
+            className="icon-btn"
           >
             <X size={24} />
           </button>
@@ -64,13 +64,12 @@ export function EditWhyChooseModal({ item, onClose, onSave }) {
             <select
               name="icon"
               value={formData.icon}
-            
               onChange={handleChange}
               className="glass-input"
             >
-              <option className='bg-slate-900 text-white' value="">Select an icon</option>
+              <option value="">Select an icon</option>
               {iconOptions.map(icon => (
-                <option className='bg-slate-900 text-white' key={icon} value={icon}>{icon}</option>
+                <option key={icon} value={icon}>{icon}</option>
               ))}
             </select>
           </div>
@@ -116,23 +115,23 @@ export function EditWhyChooseModal({ item, onClose, onSave }) {
               onChange={handleChange}
               className="glass-input"
             >
-              <option className='bg-slate-900 text-white' value="published">Published</option>
-              <option className='bg-slate-900 text-white' value="draft">Draft</option>
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
             </select>
           </div>
 
           {/* Actions */}
-          <div className="flex gap-3 pt-4 border-t border-white/10">
+          <div className="flex gap-3 pt-4 border-t section-divider">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-3 bg-muted hover:bg-muted/80 text-foreground rounded-lg transition-colors font-medium"
+              className="flex-1 btn-ghost"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-3 bg-accent hover:bg-accent/90 text-white rounded-lg transition-colors font-medium"
+              className="flex-1 btn-primary"
             >
               Save Changes
             </button>
