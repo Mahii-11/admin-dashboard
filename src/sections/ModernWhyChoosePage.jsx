@@ -1,26 +1,31 @@
-import  { useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { Plus, Edit2, Trash2, Eye, EyeOff } from 'lucide-react';
-import { whyChooseData } from '../data/cms-data';
 import { EditWhyChooseModal } from './modals/EditWhyChooseModal';
-import * as Icons from 'lucide-react';
+import * as Icons from 'react-icons/lu';
 import AddWhyChooseModal from './modals/AddWhyChooseModal';
+import { getWhyChooseData } from '../services/api';
 
-const iconMap = {
-  Heart: Icons.Heart,
-  Users: Icons.Users,
-  Award: Icons.Award,
-  Check: Icons.Check,
-  Shield: Icons.Shield,
-  Globe: Icons.Globe,
-  Star: Icons.Star,
-  Zap: Icons.Zap,
-};
+
 
 export function ModernWhyChoosePage() {
-  const [items, setItems] = useState(whyChooseData);
+  const [items, setItems] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  useEffect(() => {
+    const loadWhyChooseData = async () => {
+      try {
+        const data = await getWhyChooseData();
+        console.log(data);
+        setItems(data);
+        
+      } catch (error) {
+        console.error("Error loading why choose data:", error)
+      }
+    }
+    loadWhyChooseData();
+  }, [])
 
   const handleEdit = (id) => {
     setEditingId(id);
@@ -81,7 +86,7 @@ export function ModernWhyChoosePage() {
       {/* Cards Grid */}
       <div className="space-y-4">
         {items.map(item => {
-          const IconComponent = iconMap[item.icon];
+           const IconComponent = Icons[item.icon];
           
           return (
             <div
@@ -114,16 +119,16 @@ export function ModernWhyChoosePage() {
 
                   {/* Link Text */}
                   <div className="mb-4">
-                    <span className="text-xs text-accent font-medium">{item.linkText}</span>
+                    <span className="text-xs text-accent font-medium">{item.link_text}</span>
                   </div>
 
-                  {/* Meta Info */}
-                  <div className="text-xs text-muted-foreground mb-4">
-                    Created {new Date(item.createdAt).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric'
-                    })}
+                 {/* Meta Info */}
+                <div className="text-xs text-muted-foreground mb-4">
+                 Created {item.created_at ? new Date(item.created_at).toLocaleDateString('en-US', {
+                 month: 'short',
+                 day: 'numeric',
+                 year: 'numeric'
+                  }) : 'N/A'}
                   </div>
                 </div>
 

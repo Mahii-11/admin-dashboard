@@ -1,45 +1,21 @@
 export const cmsNavigation = [
   {
-    group: 'Dashboard',
+    group: "Dashboard",
     items: [
-      { id: 'dashboard', label: 'Overview', icon: 'LayoutDashboard' }
-    ]
+      { id: "/", label: "Overview", icon: "LayoutDashboard" },
+    ],
   },
   {
-    group: 'Website Sections',
+    group: "Website Sections",
     items: [
-      { id: 'hero', label: 'Hero Section', icon: 'Image' },
-      { id: 'whychoose', label: 'Why Choose Us', icon: 'CheckCircle2' },
-      { id: 'team', label: 'Team', icon: 'MessageSquare' },
-      { id: 'expertise', label: 'Expertise', icon: 'Zap' },
-      { id: 'identity', label: 'Identity', icon: 'Users' },
-      { id: 'project', label: 'Projects', icon: 'BookOpen' },
-  
-    ]
+      { id: "/hero", label: "Hero Section", icon: "Image" },
+      { id: "/whychoose", label: "Why Choose Us", icon: "CheckCircle2" },
+      { id: "/team", label: "Team", icon: "MessageSquare" },
+      { id: "/expertise", label: "Expertise", icon: "Zap" },
+      { id: "/identity", label: "Identity", icon: "Users" },
+      { id: "/project", label: "Projects", icon: "BookOpen" },
+    ],
   },
-  {
-    group: 'Media & Assets',
-    items: [
-      { id: 'gallery', label: 'Gallery', icon: 'Image' },
-      { id: 'media', label: 'Media Library', icon: 'Folder' }
-    ]
-  },
-  {
-    group: 'Communication',
-    items: [
-      { id: 'announcements', label: 'Announcements', icon: 'Bell' },
-      { id: 'subscribers', label: 'Subscribers', icon: 'Mail' },
-      { id: 'messages', label: 'Messages', icon: 'MessageCircle' }
-    ]
-  },
-  {
-    group: 'Settings',
-    items: [
-      { id: 'seo', label: 'SEO Settings', icon: 'Search' },
-      { id: 'website', label: 'Website Settings', icon: 'Settings' },
-      { id: 'admin', label: 'Admin Settings', icon: 'Lock' }
-    ]
-  }
 ];
 
 export const heroData = [
