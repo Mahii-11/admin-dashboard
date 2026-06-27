@@ -1,34 +1,34 @@
 import { useState } from "react";
-import { X, Upload } from "lucide-react";
+import { X, Upload, Save } from "lucide-react";
+import { updateTeamData } from "../../services/api";
 
 
-export default function EditTeamMember({onClose, onSave, member}) {
-
+export default function EditTeamMember({onClose, onRefresh, member}) {
+  
+    const [imagePreview, setImagePreview] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [loading, setLoading] = useState(null);
+    const [error, setError] = useState(null);
     const [formData, setFormData] = useState(
         {
             name: member.name,
             role: member.role,
-            email: member.email,
+            linkedin_url: member.linkedin_url,
+            whatsapp_url: member.whatsapp_url,
             image: member.image,
             bio: member.bio
 
         }
     );
 
-    const [imagePreview, setImagePreview] = useState(null);
 
-    const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-    setImagePreview(URL.createObjectURL(file));
-
-     setFormData(prev => ({
-      ...prev,
-      image: URL.createObjectURL(file)
-    }));
-
-
-    }};
+    const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        setImagePreview(URL.createObjectURL(file));
+        setSelectedFile(file);
+      }
+    };
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -40,9 +40,34 @@ export default function EditTeamMember({onClose, onSave, member}) {
         ));
     };
 
-    const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const dataToSend = new FormData();
+      dataToSend.append("name", formData.name);
+      dataToSend.append("role", formData.role);
+      dataToSend.append("bio", formData.bio);
+      dataToSend.append("_method", "POST");
+      if (selectedFile) {
+        dataToSend.append("image", selectedFile);
+      }
+
+    
+      const response = await updateTeamData(member.id, dataToSend);
+      
+      if (response) {
+        if (onRefresh) onRefresh(); 
+        onClose(); 
+      }
+    } catch (err) {
+      console.error("Update error:", err);
+      setError(err.message || "Something went wrong while updating.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -55,10 +80,17 @@ export default function EditTeamMember({onClose, onSave, member}) {
           <button
             onClick={onClose}
             className="icon-btn"
+            disabled={loading}
           >
             <X size={24} />
           </button>
         </div>
+
+          {error && (
+          <div className="mx-6 mt-4 p-3 bg-destructive/10 border border-destructive/20 text-destructive rounded-xl text-sm">
+            {error}
+          </div>
+        )}
 
         <form className="p-6 space-y-6" onSubmit={handleSubmit}>
 
@@ -73,6 +105,8 @@ export default function EditTeamMember({onClose, onSave, member}) {
               onChange={handleChange}
               placeholder="Name..."
               className="glass-input"
+              disabled={loading}
+
             />
             </div>
 
@@ -87,6 +121,7 @@ export default function EditTeamMember({onClose, onSave, member}) {
               onChange={handleChange}
               placeholder="Enter the Role"
               className="glass-input"
+              disabled={loading}
             />
           </div>
 
@@ -100,6 +135,7 @@ export default function EditTeamMember({onClose, onSave, member}) {
               onChange={handleChange}
               placeholder="Enter the description"
               rows="4"
+              disabled={loading}
               className="glass-input resize-none"
             />
           </div>
@@ -107,17 +143,32 @@ export default function EditTeamMember({onClose, onSave, member}) {
 
              <div>
             <label className="block text-sm font-medium text-foreground mb-2">
-              Email
+              Linkedin
             </label>
             <input
               type="text"
-              name="email"
-              value={formData.email}
+              name="linkedin_url"
+              value={formData.linkedin_url}
               onChange={handleChange}
               placeholder="Enter the Email"
               className="glass-input"
             />
           </div>
+
+            <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              Whats App
+            </label>
+            <input
+              type="text"
+              name="whatsapp_url"
+              value={formData.whatsapp_url}
+              onChange={handleChange}
+              placeholder="Enter the Email"
+              className="glass-input"
+            />
+          </div>
+
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">
@@ -143,8 +194,9 @@ export default function EditTeamMember({onClose, onSave, member}) {
               <input
                 type="file"
                 accept="image/*"
-                onChange={handleImageChange}
+                onChange={handleFileChange}
                 className="hidden"
+                disabled={loading}
               />
             </label>
           </div>
@@ -157,11 +209,13 @@ export default function EditTeamMember({onClose, onSave, member}) {
             >
               Cancel
             </button>
-            <button
+             <button
               type="submit"
-              className="flex-1 btn-primary"
+              className="flex-1 btn-primary flex items-center justify-center gap-2"
+              disabled={loading}
             >
-              Save Changes
+              <Save size={18} />
+              {loading ? "Saving Changes..." : "Save Changes"}
             </button>
           </div>
         </form>

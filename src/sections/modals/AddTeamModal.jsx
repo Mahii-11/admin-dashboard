@@ -1,60 +1,82 @@
-import { Upload, X } from "lucide-react";
+import { Plus, Upload, X } from "lucide-react";
 import { useState } from "react"
+import { storeTeamData } from "../../services/api";
 
 
 export default function AddTeamModal({isOpen, onClose, onAdd}) {
     const [preview, setPreview] = useState(null);
+    const [loading, setLoading] = useState(null);
+    const [error, setError] = useState(null);
     const [form, setForm] = useState({
 
         name: "",
         role: "",
         bio: "",
-        email: "",
-        image: ""
+        linkedin_url: "",
+        whatsapp_url: "",
+        image: null
     })
 
-
-      const handleChange = (e) => {
-  const { name, value, files, type } = e.target;
-
-  if (type === "file") {
-    const file = files[0];
-    const imageUrl = URL.createObjectURL(file);
-
-    setForm(prev => ({
-      ...prev,
-      [name]: imageUrl
-    }));
-
-    setPreview(imageUrl);
-  } else {
-    setForm(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  }
-};
+    if (!isOpen) return null
 
 
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        if (form.name.trim()) {
-        onAdd(form);
-        setForm({
-             name: "",
-             role: "",
-             bio: "",
-             email: "",
-             image: "",
-             
+    const handleChange = (e) => {
+    const { name, value, files, type } = e.target;
 
-            });
+    if (type === "file") {
+      const file = files[0];
+      if (file) {
+        const imageUrl = URL.createObjectURL(file);
+        setPreview(imageUrl); 
+        setForm((prev) => ({
+          ...prev,
+          [name]: file, 
+        }));
+      }
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+
+      
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+    
+      const dataToSend = new FormData();
+        dataToSend.append("name", form.name);
+        dataToSend.append("role", form.role);
+        dataToSend.append("bio", form.bio);
+        dataToSend.append("linkedin_url", form. linkedin_url);
+         dataToSend.append("whatsapp_url", form.whatsapp_url);
+      
+      if (form.image) {
+        dataToSend.append("image", form.image);
+      }
+
+      const response = await storeTeamData(dataToSend);
+      if (response) {
+        setForm({ title: "", image: null, status: 1 });
+        setPreview(null);
+        if (onAdd) onAdd(); 
         onClose();
-            
-        }
-    };
+      }
+    } catch (err) {
+      console.error("Store error:", err);
+      setError(err.message || "Failed to add new Team card.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-     if (!isOpen) return null;
+
 
 
 
@@ -72,10 +94,18 @@ export default function AddTeamModal({isOpen, onClose, onAdd}) {
             onClick={onClose}
             className="icon-btn"
             aria-label="Close"
+            disabled={loading}
           >
             <X size={24} />
           </button>
         </div>
+
+            {error && (
+          <div className="mx-6 mt-4 p-3 bg-destructive/10 border border-destructive/20 text-destructive rounded-xl text-sm">
+            {error}
+          </div>
+        )}
+
 
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             {/* Image Upload */}
@@ -111,6 +141,7 @@ export default function AddTeamModal({isOpen, onClose, onAdd}) {
     accept="image/*"
     onChange={handleChange}
     className="hidden"
+    disabled={loading}
   />
 </label>
             </div>
@@ -124,6 +155,7 @@ export default function AddTeamModal({isOpen, onClose, onAdd}) {
                 onChange={handleChange}
                 className="glass-input"
                 placeholder="Enter member name"
+                disabled={loading}
               />
             </div>
 
@@ -136,6 +168,7 @@ export default function AddTeamModal({isOpen, onClose, onAdd}) {
                 onChange={handleChange}
                 className="glass-input"
                 placeholder="Enter role"
+                disabled={loading}
               />
             </div>
 
@@ -147,16 +180,32 @@ export default function AddTeamModal({isOpen, onClose, onAdd}) {
                 onChange={handleChange}
                 className="glass-input resize-none h-24"
                 placeholder="Enter bio"
+                disabled={loading}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-foreground mb-2">Email</label>
+                <label className="block text-sm font-semibold text-foreground mb-2">Linkedin</label>
                 <input
                   type="text"
-                  name="email"
-                  value={form.email}
+                  name="linkedin_url"
+                  value={form.linkedin_url}
+                  onChange={handleChange}
+                  className="glass-input"
+                  placeholder="e.g., name@company.com"
+                />
+              </div>
+             
+            </div>
+
+               <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-foreground mb-2">Whats App</label>
+                <input
+                  type="text"
+                  name="whatsapp_url"
+                  value={form.whatsapp_url}
                   onChange={handleChange}
                   className="glass-input"
                   placeholder="e.g., name@company.com"
@@ -174,12 +223,10 @@ export default function AddTeamModal({isOpen, onClose, onAdd}) {
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="flex-1 btn-primary"
-              >
-                Save Changes
-              </button>
+               <button type="submit" className="flex-1 btn-primary flex items-center justify-center gap-2" disabled={loading}>
+              <Plus size={18} />
+              {loading ? "Adding..." : "Add Card"}
+            </button>
             </div>
           </form>
 

@@ -1,21 +1,18 @@
 import { Plus, X } from "lucide-react";
 import { useState } from "react";
-import { storeWhyChooseData } from "../../services/api";
+import { storeSupportData } from "../../services/api";
 
-export default function AddWhyChooseModal({ isOpen, onClose, onAdd }) {
+export default function AddSupportModal({ isOpen, onClose, onAdd }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   
-
   const [formData, setFormData] = useState({
     title: "",
-    description: "",
     icon: "",
-    link_text: ""
   });
 
   
-  const iconOptions = ['Heart', 'Users', 'Award', 'Check', 'Shield', 'Globe', 'LuGraduationCap', 'LuUserCheck', 'LuSparkles', 'LuZap', 'LuHeart'];
+  const iconOptions = [ 'Users', 'Flame', 'GraduationCap', 'Wrench', 'FileText',];
 
   if (!isOpen) return null;
 
@@ -33,16 +30,13 @@ export default function AddWhyChooseModal({ isOpen, onClose, onAdd }) {
     setError(null);
 
     try {
-      const response = await storeWhyChooseData(formData);
+      const response = await storeSupportData(formData);
       
       if (response) {
         if (onAdd) onAdd(); 
-        
     
         setFormData({
           title: '',
-          description: '',
-          link_text: '',
           icon: ''
         });
         
@@ -62,8 +56,8 @@ export default function AddWhyChooseModal({ isOpen, onClose, onAdd }) {
         {/* Header */}
         <div className="modal-header">
           <div>
-            <h2 className="text-2xl font-bold text-foreground">Add Why Choose</h2>
-            <p className="text-muted-foreground text-sm mt-1">Create a new Why Choose item</p>
+            <h2 className="text-2xl font-bold text-foreground">Add Support Data</h2>
+            <p className="text-muted-foreground text-sm mt-1">Create a new Support Data item</p>
           </div>
           <button
             onClick={onClose}
@@ -118,34 +112,7 @@ export default function AddWhyChooseModal({ isOpen, onClose, onAdd }) {
             </select>
           </div>
 
-          {/* Description */}
-          <div>
-            <label className="block text-sm font-semibold text-foreground mb-2">Description *</label>
-            <textarea
-              name="description"
-              placeholder="Enter description"
-              value={formData.description}
-              onChange={handleChange}
-              className="glass-input resize-none h-32"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          {/* Link Text */}
-          <div>
-            <label className="block text-sm font-semibold text-foreground mb-2">Link Text</label>
-            <input
-              type="text"
-              name="link_text"
-              placeholder="e.g., Learn More, Discover More"
-              value={formData.link_text}
-              onChange={handleChange}
-              className="glass-input"
-              disabled={loading}
-            />
-          </div>
-
+         
           {/* Action Buttons */}
           <div className="flex gap-3 pt-6 border-t section-divider">
             <button

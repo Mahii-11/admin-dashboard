@@ -12,6 +12,8 @@ const iconMap = {
   Users: Icons.Users,
   MessageSquare: Icons.MessageSquare,
   Zap: Icons.Zap,
+  Lightbulb: Icons.Lightbulb,
+  Sparkles: Icons.Sparkles,
   Folder: Icons.Folder,
   Bell: Icons.Bell,
   Mail: Icons.Mail,
@@ -19,6 +21,9 @@ const iconMap = {
   Search: Icons.Search,
   Settings: Icons.Settings,
   Lock: Icons.Lock,
+  HelpingHand: Icons.HelpingHand,
+  University: Icons.University,
+  ArrowRight: Icons.ArrowRight
 };
 
 export default function Sidebar({ open, onToggle, onNavigate }) {
@@ -50,9 +55,9 @@ export default function Sidebar({ open, onToggle, onNavigate }) {
         {open && (
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg avatar-gradient flex items-center justify-center text-xs font-bold shadow-glow">
-              C
+              CB
             </div>
-            <span className="text-lg font-bold logo-gradient">CMS Hub</span>
+            <span className="text-lg font-bold logo-gradient">Crown Bridge</span>
           </div>
         )}
 
@@ -158,7 +163,7 @@ export default function Sidebar({ open, onToggle, onNavigate }) {
       <div className="p-4 border-t border-border mt-auto">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 avatar-gradient rounded-xl flex items-center justify-center font-semibold text-sm shadow-glow flex-shrink-0">
-            {open ? "CMS" : "C"}
+            {open ? "CB" : "C"}
           </div>
 
           {open && (

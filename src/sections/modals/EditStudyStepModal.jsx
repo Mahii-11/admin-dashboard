@@ -1,17 +1,16 @@
 import  { useState } from 'react';
 import { X } from 'lucide-react';
-import { updateWhyChooseData } from '../../services/api';
+import { updateStudyStepUniData,  } from '../../services/api';
 
-export default function EditWhyChooseModal({ item, onClose, onRefresh }) {
+export default function EditStudyStepModal({ item, onClose, onRefresh }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     title: item?.title || '',
     description: item?.description || '',
-    link_text: item?.link_text || item?.linkText || '', 
     icon: item?.icon || '',
   });
-  const iconOptions = ['Heart', 'Users', 'Award', 'Check', 'Shield', 'Globe', 'LuGraduationCap', 'LuUserCheck', 'LuSparkles', 'LuZap', 'LuHeart'];
+  const iconOptions = ['FaPassport', "FaFileAlt", "FaUniversity", "FaGraduationCap", "FaWallet"];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,12 +26,11 @@ export default function EditWhyChooseModal({ item, onClose, onRefresh }) {
     setError(null);
 
     try {
-      // স্ক্রিনশট অনুযায়ী POST মেথডে `why-choose/update/${item.id}` এ রিকোয়েস্ট যাবে
-      const response = await updateWhyChooseData(item.id, formData);
+      const response = await updateStudyStepUniData(item.id, formData);
       
       if (response) {
-        if (onRefresh) onRefresh(); // প্যারেন্ট ডেটা রিলোড করবে
-        onClose(); // মোডাল বন্ধ করবে
+        if (onRefresh) onRefresh(); 
+        onClose(); 
       }
     } catch (err) {
       console.error("Update error:", err);
@@ -46,7 +44,7 @@ export default function EditWhyChooseModal({ item, onClose, onRefresh }) {
       <div className="modal-panel">
         {/* Header */}
         <div className="modal-header">
-          <h2 className="text-2xl font-bold text-foreground">Edit Why Choose Item</h2>
+          <h2 className="text-2xl font-bold text-foreground">Edit Study Step Item</h2>
           <button
             onClick={onClose}
             className="icon-btn"
@@ -112,23 +110,7 @@ export default function EditWhyChooseModal({ item, onClose, onRefresh }) {
             />
           </div>
 
-          {/* Link Text */}
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">
-              Link Text
-            </label>
-            <input
-              type="text"
-              name="link_text"
-              value={formData.link_text}
-              onChange={handleChange}
-              placeholder="e.g., Learn More, Discover, Read More"
-              className="glass-input"
-            />
-          </div>
-
-        
-
+    
           {/* Actions */}
           <div className="flex gap-3 pt-4 border-t section-divider">
             <button

@@ -32,7 +32,7 @@ export default function AddHeroModal({isOpen, onClose, onAdd}) {
       [name]: value
     }));
   }
-};
+        };
 
     const handleSubmit = (e) => {
         e.preventDefault();

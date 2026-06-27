@@ -10,7 +10,12 @@ export const cmsNavigation = [
     items: [
       { id: "/hero", label: "Hero Section", icon: "Image" },
       { id: "/whychoose", label: "Why Choose Us", icon: "CheckCircle2" },
+      { id: "/programs", label: "Programs", icon: "Lightbulb"},
+      { id: "/highlight", label: "Highlight Card", icon: "Sparkles"},
+      { id: "/support", label: "Support Data", icon: "HelpingHand"},
       { id: "/team", label: "Team", icon: "MessageSquare" },
+      { id: "/partnerUni", label: "Partner University", icon: "University"},
+      { id: "/studystep", label: "Study-Step", icon: "ArrowRight" },
       { id: "/expertise", label: "Expertise", icon: "Zap" },
       { id: "/identity", label: "Identity", icon: "Users" },
       { id: "/project", label: "Projects", icon: "BookOpen" },

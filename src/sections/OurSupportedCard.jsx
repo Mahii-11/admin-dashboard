@@ -1,36 +1,21 @@
-import { useEffect, useState, useCallback } from 'react';
-import { Plus, Edit2, Trash2, Loader2 } from 'lucide-react';
-import  EditWhyChooseModal  from './modals/EditWhyChooseModal';
+import { Edit2, Loader2, Plus, Trash2 } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 import * as Icons from 'react-icons/lu';
-import AddWhyChooseModal from './modals/AddWhyChooseModal';
-import { deleteWhyChooseData, getWhyChooseData } from '../services/api'; 
+import { deleteSupportData, getSupportData } from '../services/api';
+import EditSupportModal from './modals/EditSupportModal';
+import AddSupportModal from './modals/AddSupportModal';
 import WhyChooseSkeleton from '../loader/WhyChooseSkeleton';
 
-
 const iconMap = {
-  Heart: Icons.LuHeart,
-  Users: Icons.LuUsers,
-  Award: Icons.LuAward,
-  Check: Icons.LuCheck,
-  Shield: Icons.LuShield,
-  Globe: Icons.LuGlobe,
 
-  LuHeart: Icons.LuHeart,
-  LuUsers: Icons.LuUsers,
-  LuAward: Icons.LuAward,
-  LuCheck: Icons.LuCheck,
-  LuShield: Icons.LuShield,
-  LuGlobe: Icons.LuGlobe,
+     Flame: Icons.LuFlame,
+     GraduationCap: Icons.LuGraduationCap,
+     Users: Icons.LuUsers,
+     Wrench: Icons.LuWrench,
+     FileText: Icons.LuFileText,
+}
 
-  LuGraduationCap: Icons.LuGraduationCap,
-  LuUserCheck: Icons.LuUserCheck,
-  LuSparkles: Icons.LuSparkles,
-  LuZap: Icons.LuZap,
-};
-
-
-
-export default  function ModernWhyChoosePage() {
+export default function OurSupportedCard() {
   const [items, setItems] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -38,14 +23,15 @@ export default  function ModernWhyChoosePage() {
   const [loading, setLoading] = useState(false); 
   const [deletingId, setDeletingId] = useState(null);
 
-  const loadWhyChooseData = useCallback(async () => {
+
+  const loadSupportedData = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await getWhyChooseData();
-      console.log("Fetched Why Choose Data:", data);
+      const data = await getSupportData();
+      console.log("Fetched Support Data Data:", data);
       setItems(Array.isArray(data) ? data : data?.data || []);
     } catch (error) {
-      console.error("Error loading why choose data:", error);
+      console.error("Error loading Support Data data:", error);
     } finally {
       setLoading(false);
     }
@@ -53,10 +39,10 @@ export default  function ModernWhyChoosePage() {
 
  useEffect(() => {
     const fetchAsyncData = async () => {
-      await loadWhyChooseData();
+      await loadSupportedData();
     };
     fetchAsyncData();
-  }, [loadWhyChooseData]);
+  }, [loadSupportedData]);
 
   const handleEdit = (id) => {
     setEditingId(id);
@@ -67,7 +53,7 @@ const handleDelete = async (id) => {
   setDeletingId(id);
 
   try {
-    await deleteWhyChooseData(id); 
+    await deleteSupportData(id); 
     setItems(prevItems => prevItems.filter(item => item.id !== id));
   } catch (error) {
     console.error("Failed to delete:", error);
@@ -77,18 +63,19 @@ const handleDelete = async (id) => {
 };
 
   const handleAddItem = () => {
-    loadWhyChooseData(); 
+    loadSupportedData(); 
   };
   
 
   const editingItem = items.find(item => item.id === editingId);
 
+
   return (
-    <div className="space-y-8">
+     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="page-title text-4xl">Why Choose Us</h1>
+          <h1 className="page-title text-4xl">Support Data Us</h1>
           <p className="page-subtitle">Manage your key selling points and value propositions</p>
         </div>
         <button
@@ -96,7 +83,7 @@ const handleDelete = async (id) => {
           className="btn-primary flex items-center gap-2"
         >
           <Plus size={18} />
-          Add Why Choose
+          Add Support Data
         </button>
       </div>
 
@@ -109,7 +96,7 @@ const handleDelete = async (id) => {
         /* Cards Grid */
         <div className="space-y-4">
           {items.map(item => {
-            const IconComponent = iconMap[item.icon] || Icons.LuBadgeHelp;
+            const IconComponent = iconMap[item.icon];
             
             return (
               <div
@@ -122,7 +109,7 @@ const handleDelete = async (id) => {
                     {IconComponent ? (
                       <IconComponent size={32} className="text-accent" />
                     ) : (
-                      <Icons.LuBadgeHelp size={32} className="text-accent" />
+                      <Icons.LuUsers size={32} className="text-accent" />
                     )}
                   </div>
 
@@ -134,13 +121,7 @@ const handleDelete = async (id) => {
                       </div>
                     </div>
 
-                    {/* Description */}
-                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{item.description}</p>
-
-                    {/* Link Text */}
-                    <div className="mb-4">
-                      <span className="text-xs text-accent font-medium">{item.link_text || item.linkText}</span>
-                    </div>
+                  
 
                     {/* Meta Info */}
                     <div className="text-xs text-muted-foreground mb-4">
@@ -190,7 +171,7 @@ const handleDelete = async (id) => {
       )}
 
       {/* Add Modal */}
-      <AddWhyChooseModal
+      <AddSupportModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onAdd={handleAddItem}
@@ -198,15 +179,15 @@ const handleDelete = async (id) => {
 
       {/* Edit Modal */}
       {isEditModalOpen && editingItem && (
-        <EditWhyChooseModal
+        <EditSupportModal
           item={editingItem}
           onClose={() => {
             setIsEditModalOpen(false);
             setEditingId(null);
           }}
-          onRefresh={loadWhyChooseData} 
+          onRefresh={loadSupportedData} 
         />
       )}
     </div>
-  );
+  )
 }
